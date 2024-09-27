@@ -44,14 +44,14 @@ public class PhotoLikeCommentService {
             } else {
             	
             	
-              //  logger.log(Level.WARNING, "Photo not found with ID: {0}", id);
+              logger.log(Level.WARNING, "Photo not found with ID: {0}", id);
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error liking photo with ID: " + id + " by user: " + userName, e);
         }
     }
 
-    // Logic to comment on a photo with logging
+   
     public void commentOnPhoto(int id, String userName, String comment) {
         logger.log(Level.INFO, "User is commenting on photo with ID");
         try {
@@ -59,7 +59,7 @@ public class PhotoLikeCommentService {
             if (photoLikeCommentOpt.isPresent()) {
                 PhotoLikeComment photoLikeComment = photoLikeCommentOpt.get();
 
-                // Create a comment map or Comment entity and add it to the photo's comments list
+                
                 Comment cm = new Comment();
                 cm.setUserName(userName);
                 cm.setComment(comment);

@@ -45,10 +45,10 @@ private PhotoLikeCommentRepository photoLikeCommentRepository;
             PLC.setUserName(userName);
             photoLikeCommentRepository.save(PLC);
 
-            // Create a new PostPhoto object
+           
             PostPhoto postPhoto = new PostPhoto(userName, photo, LocalDateTime.now(), randomId);
 
-            // Save the new PostPhoto to the repository
+            
             PostPhoto savedPostPhoto = postPhotoRepository.save(postPhoto);
             
             
@@ -58,7 +58,7 @@ private PhotoLikeCommentRepository photoLikeCommentRepository;
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error saving photo for user: " + userName, e);
-            return "please retry";  // Return null in case of failure
+            return "please retry";  
         }
     }
 
@@ -70,7 +70,7 @@ private PhotoLikeCommentRepository photoLikeCommentRepository;
 
         try {
             do {
-                randomId = 100000 + random.nextInt(900000); // Generates a 6-digit number between 100000 and 999999
+                randomId = 100000 + random.nextInt(900000); 
                 existingPostPhoto = postPhotoRepository.findByRandomId(randomId);
             } while (existingPostPhoto.isPresent());
 
@@ -78,18 +78,18 @@ private PhotoLikeCommentRepository photoLikeCommentRepository;
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error generating unique random ID", e);
-            return -1;  // Return a failure code (e.g., -1) if ID generation fails
+            return -1; 
         }
     }
 
-    // Fetch all PostPhotos in reverse chronological order (latest first)
+    
     public List<PostPhoto> getPhotosByUser(String userName) {
         logger.log(Level.INFO, "Fetching photos for user: {0}", userName);
         try {
             return postPhotoRepository.findAllByUserNameOrderByUploadTimeDesc(userName);
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error fetching photos for user: " + userName, e);
-            return null;  // Return null in case of failure
+            return null; 
         }
     }
 }
