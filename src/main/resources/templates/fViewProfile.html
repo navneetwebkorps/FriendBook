@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <!-- Bootstrap CSS for styling -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #F0F2F5;
+        }
+
+        .profile-header {
+            background-color: #1877F2;
+            color: white;
+            padding: 10px;
+            font-size: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-header button {
+            background-color: white;
+            color: #1877F2;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .profile-section {
+            margin: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-section img {
+            border: 5px solid black;
+            margin-right: 20px;
+        }
+
+        .profile-info h5, .profile-info h6 {
+            margin: 5px 0;
+        }
+
+        .photos-section {
+            margin: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .photos-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .photos-grid img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .btn-custom {
+            background-color: #1877F2;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar (optional) -->
+    <div th:insert="~{Navbar :: navbar}"></div>
+
+    <!-- Success Message -->
+    <div class="alert alert-success" role="alert" th:if="${message}">
+        <span th:text="${message}"></span>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="container">
+        <div class="profile-section">
+            <div class="profile-header">
+                <h5>Profile of <span th:text="${fUsername}">User</span></h5>
+               <!--  <form action="/updateProfile" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="fUsername" th:value="${fUsername}">
+                    <button type="submit">Edit</button>
+                 </form> -->
+            </div>
+            
+
+            <div class="d-flex">
+                                
+               <img th:if="${fUserProfile != null && fUserProfile.base64Photo != null}" 
+     th:src="'data:image/png;base64,' + ${fUserProfile.base64Photo}" 
+     alt="Profile Photo" style="width: 150px; height: 150px;" />
+
+<img th:if="${fUserProfile != null && fUserProfile.base64Photo == null}" 
+     src="/img/default.png" alt="Default Profile Photo" 
+     style="width: 150px; height: 150px;" />
+  <div class="profile-info">
+                    <h5><span th:text="${fUser.username}">Username</span></h5>
+
+                            <h6>Followers: <span th:text="${followers}">followers</span></h6>
+                        
+                   
+                            <h6>Following: <span th:text="${following}">following</span></h6>
+                        
+                    <!-- Favorite Songs, Places, Books -->
+                    <h6>Songs:
+                        <span th:if="${fUserProfile != null and fUserProfile.favSongs != null}" th:text="${fUserProfile.favSongs}">Songs</span>
+                        <span th:if="${fUserProfile == null or fUserProfile.favSongs == null}">No data available</span>
+                    </h6>
+
+                    <h6>Places:
+                        <span th:if="${fUserProfile != null and fUserProfile.favPlaces != null}" th:text="${fUserProfile.favPlaces}">Places</span>
+                        <span th:if="${fUserProfile == null or fUserProfile.favPlaces == null}">No data available</span>
+                    </h6>
+
+                    <h6>Books:
+                        <span th:if="${fUserProfile != null and fUserProfile.favBooks != null}" th:text="${fUserProfile.favBooks}">Books</span>
+                        <span th:if="${fUserProfile == null or fUserProfile.favBooks == null}">No data available</span>
+                    </h6>
+                </div>
+            </div>
+        </div>
+
+        <!-- Uploaded Photos Section -->
+        <div class="photos-section">
+            <h5>Uploaded Photos</h5>
+            <div class="photos-grid">
+                <!-- Iterate over the map of photos -->
+                <div th:each="entry : ${postPhoto}" class="photo-item">
+                    <!-- Display the photo and actions -->
+                    <img th:src="${entry.value}" alt="User Photo">
+                    <div class="photo-actions">
+                      <!--   <form action="/photos/getLikeComment" method="get">
+                            Hidden inputs for the randomId and username
+                            <input type="hidden" name="id" th:value="${entry.key}">
+                            <input type="hidden" name="username" th:value="${fUsername}">
+                            <button type="submit" class="btn btn-primary">Like and Comment</button>
+                        </form> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

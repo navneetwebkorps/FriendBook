@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div th:fragment="navbar">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="#">Friend Book</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <form action="/searchUser" method="get" class="form-inline mx-auto">
+                    <input class="form-control mr-sm-2" name="searchData" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                        <form action="/home" method="post">
+                           <input type="hidden" name="username" th:value="${session.username}">
+
+                            <button type="submit" class="btn btn-primary">Home</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="/profile" method="get">
+                            <input type="hidden" name="username" th:value="${session.username}">
+
+                            <button type="submit" class="btn btn-primary">Profile</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="/userSuggestion" method="get">
+                           <input type="hidden" name="username" th:value="${session.username}">
+                            <button type="submit" class="btn btn-primary">Suggestion</button>
+                        </form>                    </li>
+                    <li class="nav-item">
+                        <form action="/notifications" method="get">
+                           <input type="hidden" name="username" th:value="${session.username}">
+                            <button type="submit" class="btn btn-primary">Notifications</button>
+                        </form>
+                    </li>
+                     <li class="nav-item">
+                        <form action="/logout" method="get">
+                           <input type="hidden" name="username" th:value="${session.username}">
+                            <button type="submit" class="btn btn-primary">Logout</button>
+                        </form>
+                    </li>
+                    
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Include Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
