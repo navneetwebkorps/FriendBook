@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Page</title>
+    <style>
+        body {
+            background-color: #f8d7da;
+            color: #721c24;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .error-container {
+            border: 1px solid #f5c6cb;
+            background-color: #f8d7da;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        h1 {
+            color: #721c24;
+            font-size: 24px;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-container">
+        <h1>Error Occurred</h1>
+        <!-- Displaying the error message -->
+        <p th:text="${errorMessage}">Error message goes here</p>
+        <!-- Displaying additional error details -->
+        <p th:text="${errorDetails}">Additional details about the error</p>
+         <p th:text="${errorCode}">Coder</p>
+        <!-- Displaying timestamp of the error -->
+        <p th:text="${errorTime}">Timestamp: [Time of error]</p>
+    </div>
+ <a class="btn btn-primary" href="/home">Home</a>
+ <a class="btn btn-primary" href="/">Login</a>
+</body>
+</html>

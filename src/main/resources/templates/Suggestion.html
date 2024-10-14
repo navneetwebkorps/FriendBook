@@ -110,7 +110,7 @@
                             </thead>
                             <tbody>
                                 <!-- Iterate over the userSuggestions map -->
-                                <tr th:each="entry : ${userSuggestions}">
+                                <tr th:each="entry : ${userSuggestions}" id="userRow_#{entry.key}">
                                     <!-- Display the username -->
                                     <td th:text="${entry.key}">Username1</td>
 
@@ -124,7 +124,7 @@
 
                                     <!-- Follow button -->
                                     <td>
-                                        <form action="/userFollowRequest" method="post">
+                                        <form id="followform" action="/userFollowRequest" method="post" onsubmit="followRequest(event)">
                                             <input type="hidden" name="followerUsername" th:value="${entry.key}">
                                             <input type="hidden" name="username" th:value="${session.username}">
                                             <button type="submit" class="follow-btn">Follow</button>
@@ -139,7 +139,40 @@
             </div>
         </div>
     </div>
+<script type="text/javascript">
+async function followRequest(event) {
+	event.preventDefault(); // Prevent the form from submitting the traditional way
 
+	const formData = new FormData(event.target);
+
+	try {
+		// Wait for the response from the server
+		const response = await
+		fetch('/userFollowRequest', {
+			method : 'POST',
+			body : formData,
+		});
+
+		if (response.ok) {
+			const data = await
+			response.text(); // Wait for the response body
+			
+			// Reload the page after processing the response
+			location.reload();
+
+		} else {
+			console.error('Error uploading photo:', response.statusText);
+		}
+	} catch (error) {
+		console.error('Error:', error);
+	}
+	
+
+}
+
+	
+
+</script>
     <!-- Bootstrap and jQuery (optional for Bootstrap's JavaScript components) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>

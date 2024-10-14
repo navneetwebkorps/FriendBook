@@ -18,43 +18,26 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <form action="/searchUser" method="get" class="form-inline mx-auto">
+                <form action="/searchUser" method="Get" class="form-inline mx-auto">
                     <input class="form-control mr-sm-2" name="searchData" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
                 </form>
                 <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                        <form action="/home" method="post">
-                           <input type="hidden" name="username" th:value="${session.username}">
-
-                            <button type="submit" class="btn btn-primary">Home</button>
-                        </form>
+                    <li class="nav-item">
+                        <a class="btn btn-primary" href="/home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <form action="/profile" method="get">
-                            <input type="hidden" name="username" th:value="${session.username}">
-
-                            <button type="submit" class="btn btn-primary">Profile</button>
-                        </form>
+                        <a class="btn btn-primary" href="/profile">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <form action="/userSuggestion" method="get">
-                           <input type="hidden" name="username" th:value="${session.username}">
-                            <button type="submit" class="btn btn-primary">Suggestion</button>
-                        </form>                    </li>
+                        <a class="btn btn-primary" href="/userSuggestion">Suggestion</a>
+                    </li>
                     <li class="nav-item">
-                        <form action="/notifications" method="get">
-                           <input type="hidden" name="username" th:value="${session.username}">
-                            <button type="submit" class="btn btn-primary">Notifications</button>
-                        </form>
+                        <a class="btn btn-primary" href="/notifications">Notifications</a>
                     </li>
-                     <li class="nav-item">
-                        <form action="/logout" method="get">
-                           <input type="hidden" name="username" th:value="${session.username}">
-                            <button type="submit" class="btn btn-primary">Logout</button>
-                        </form>
+                    <li class="nav-item">
+                        <a class="btn btn-primary" href="/logout">Logout</a>
                     </li>
-                    
                 </ul>
             </div>
         </nav>

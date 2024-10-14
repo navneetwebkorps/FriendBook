@@ -6,6 +6,66 @@
     <title>Followers and Following</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript">
+    
+    async function followRemove(event) {
+		event.preventDefault();
+		const formData = new FormData(event.target);
+
+		try {
+		
+			const response = await
+			fetch('/userFollowRequestRemove', {
+				method : 'POST',
+				body : formData,
+			});
+
+			if (response.ok) {
+				const data = await
+				response.text(); // Wait for the response body
+				
+				// Reload the page after processing the response
+				location.reload();
+
+			} else {
+				console.error('Error uploading photo:', response.statusText);
+			}
+		} catch (error) {
+			console.error('Error:', error);
+		}
+		
+
+	}
+    async function userUnfollow(event) {
+		event.preventDefault(); // Prevent the form from submitting the traditional way
+
+		const formData = new FormData(event.target);
+
+		try {
+			// Wait for the response from the server
+			const response = await
+			fetch('/userUnfollow', {
+				method : 'POST',
+				body : formData,
+			});
+
+			if (response.ok) {
+				const data = await
+				response.text(); // Wait for the response body
+				
+				// Reload the page after processing the response
+				location.reload();
+
+			} else {
+				console.error('Error uploading photo:', response.statusText);
+			}
+		} catch (error) {
+			console.error('Error:', error);
+		}
+		
+
+	}
+    </script>
 </head>
 <body>
    <!-- Include Navbar Fragment -->
@@ -22,7 +82,7 @@
                     <!-- Loop through the followers list and create a form for each -->
                     <div th:each="follower : ${FollowersUsernameList}">
                         <!-- Form to handle the action when follower's username is clicked -->
-                        <form th:action="@{/fViewProfile}" method="get">
+                        <form th:action="@{/fViewProfile}" method="get" >
                             <!-- Hidden input to send the follower's username -->
                             <input type="hidden" name="fUsername" th:value="${follower}" />
                             
@@ -31,7 +91,7 @@
                                 <h6 th:text="${follower}">Follower Username</h6>
                             </button>
                         </form>
-                        <form th:action="@{/userFollowRequest3}" method="post">
+                        <form th:action="@{/userFollowRequestRemove}" method="post" onsubmit="followRemove(event)" >
                                <input type="hidden" name="followerUsername" th:value="${follower}" />
                         <button type="submit">
                         Remove
@@ -58,8 +118,8 @@
                                 <h6 th:text="${following}">Following Username</h6>
                             </button>
                         </form>
-                         <form th:action="@{/userFollowRequest4}" method="post">
-                               <input type="hidden" name="followerUsername" th:value="${follower}" />
+                         <form th:action="@{/userUnfollow}" method="post" onsubmit="userUnfollow(event)">
+                               <input type="hidden" name="followerUsername" th:value="${following}" />
                         <button type="submit">
                         Unfollow
                         </button>

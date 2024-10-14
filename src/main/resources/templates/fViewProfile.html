@@ -100,13 +100,7 @@
 
             <div class="d-flex">
                                 
-               <img th:if="${fUserProfile != null && fUserProfile.base64Photo != null}" 
-     th:src="'data:image/png;base64,' + ${fUserProfile.base64Photo}" 
-     alt="Profile Photo" style="width: 150px; height: 150px;" />
-
-<img th:if="${fUserProfile != null && fUserProfile.base64Photo == null}" 
-     src="/img/default.png" alt="Default Profile Photo" 
-     style="width: 150px; height: 150px;" />
+   <img th:src="${fUserProfile.base64Photo}" alt="Profile Photo" style="width: 150px; height: 150px;" />
   <div class="profile-info">
                     <h5><span th:text="${fUser.username}">Username</span></h5>
 

@@ -27,7 +27,7 @@
             <ul class="list-group list-group-flush">
                 <!-- Loop through the map of username -> comment -->
                 <li class="list-group-item" th:each="entry : ${commentUsernameMap}">
-                    <strong th:text="${entry.key}"></strong>: <span th:text="${entry.value}"></span>
+                    <strong th:text="${entry.userName}"></strong>: <span th:text="${entry.comment}"></span>
                 </li>
             </ul>
         </div>

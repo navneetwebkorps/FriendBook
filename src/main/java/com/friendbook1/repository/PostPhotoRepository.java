@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.friendbook1.entities.PostPhoto;
 
-public interface PostPhotoRepository extends JpaRepository<PostPhoto, String> {
+public interface PostPhotoRepository extends JpaRepository<PostPhoto, Integer> {
 	List<PostPhoto> findAllByUserNameOrderByUploadTimeDesc(String userName);
-	  Optional<PostPhoto> findByRandomId(int randomId);
+
+	Optional<PostPhoto> findByRandomId(int randomId);
 
 }

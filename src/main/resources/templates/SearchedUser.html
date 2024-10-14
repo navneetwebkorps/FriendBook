@@ -5,34 +5,68 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home</title>
 <!-- Bootstrap CSS -->
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
 <!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script>
-        function hideAlert() {
-            const alert = document.getElementById('success-alert');
-            if (alert) {
-                alert.style.display = 'none';
-            }
-        }
+	function hideAlert() {
+		const alert = document.getElementById('success-alert');
+		if (alert) {
+			alert.style.display = 'none';
+		}
+	}
 
-        window.onload = function() {
-            // Set a timeout to hide the alert after 5 seconds
-            setTimeout(hideAlert, 5000);
-        };
-    </script>
+	window.onload = function() {
+		// Set a timeout to hide the alert after 5 seconds
+		setTimeout(hideAlert, 5000);
+	};
+	async function followRequestInSearch(event) {
+		event.preventDefault(); // Prevent the form from submitting the traditional way
+
+		const formData = new FormData(event.target);
+
+		try {
+			// Wait for the response from the server
+			const response = await
+			fetch('/userFollowRequest1', {
+				method : 'POST',
+				body : formData,
+			});
+
+			if (response.ok) {
+				const data = await
+				response.text(); // Wait for the response body
+				
+				// Reload the page after processing the response
+				location.reload();
+
+			} else {
+				console.error('Error uploading photo:', response.statusText);
+			}
+		} catch (error) {
+			console.error('Error:', error);
+		}
+		
+
+	}
+</script>
 </head>
 <body>
 	<!-- Include Navbar Fragment -->
-	
+
 	<div th:insert="~{Navbar :: navbar}"></div>
-	      <!-- Success Message -->
-    <div th:if="${message}" id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
-        <span th:text="${message}"></span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="hideAlert()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+	<!-- Success Message -->
+	<div th:if="${message}" id="success-alert"
+		class="alert alert-success alert-dismissible fade show" role="alert">
+		<span th:text="${message}"></span>
+		<button type="button" class="close" data-dismiss="alert"
+			aria-label="Close" onclick="hideAlert()">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
 	<div class="container">
 		<h2>Search Results</h2>
 
@@ -43,22 +77,29 @@
 					<!-- Display the username (key of the map entry) -->
 					<h5 class="card-title" th:text="${entry.key}">Username</h5>
 
-					<!-- If not followed, show Follow button with form -->
-					<form th:if="${entry.value == false}" th:action="@{/userFollowRequest1}" method="post">
-					   <input type="hidden" name="username" th:value="${session.username}">
-					     <input type="hidden" name="searchData" th:value="${searchData}">
-						<input type="hidden" name="followerUsername" th:value="${entry.key}"/>
-						<button type="submit" class="btn btn-primary" th:text="'Follow ' + ${entry.key}">Follow</button>
+					<!-- If not followed, show Follow link -->
+					<form th:if="${entry.value == false}"
+						action="/userFollowRequestInSearch" method="post" onsubmit="followRequestInSearch(event)">
+						<input type="hidden" name="username"
+							th:value="${session.username}"> <input type="hidden"
+							name="followerUsername" th:value="${entry.key}"> <input
+							type="hidden" name="searchData" th:value="${searchData}">
+						<button type="submit" class="btn btn-primary">
+							Follow <span th:text="${entry.key}"></span>
+						</button>
 					</form>
 
 					<!-- If already followed, show Following button -->
-					<button class="btn btn-secondary" th:if="${entry.value == true}" th:text="'Following ' + ${entry.key}" disabled>Requested</button>
+					<button class="btn btn-secondary" th:if="${entry.value == true}"
+						th:text="'Following ' + ${entry.key}" disabled>Requested</button>
 				</div>
 			</div>
 		</div>
+
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

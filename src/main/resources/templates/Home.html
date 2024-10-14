@@ -57,6 +57,65 @@
             // Set a timeout to hide the alert after 5 seconds
             setTimeout(hideAlert, 5000);
         };
+        
+        /* async function sendLike(event) {
+    		event.preventDefault(); // Prevent the form from submitting the traditional way
+
+    		const formData = new FormData(event.target);
+
+    		try {
+    			// Wait for the response from the server
+    			const response = await
+    			fetch('/photos/sendLike', {
+    				method : 'POST',
+    				body : formData,
+    			});
+
+    			if (response.ok) {
+    				const data = await
+    				response.text(); // Wait for the response body
+    				
+    				// Reload the page after processing the response
+    				location.reload();
+
+    			} else {
+    				console.error('Error uploading photo:', response.statusText);
+    			}
+    		} catch (error) {
+    			console.error('Error:', error);
+    		}
+    		
+
+    	} */
+        async function sendComment(event) {
+    		event.preventDefault(); // Prevent the form from submitting the traditional way
+
+    		const formData = new FormData(event.target);
+
+    		try {
+    			// Wait for the response from the server
+    			const response = await
+    			fetch('/photos/sendComment', {
+    				method : 'POST',
+    				body : formData,
+    			});
+
+    			if (response.ok) {
+    				const data = await
+    				response.text(); // Wait for the response body
+    				
+    				// Reload the page after processing the response
+    				location.reload();
+
+    			} else {
+    				console.error('Error uploading photo:', response.statusText);
+    			}
+    		} catch (error) {
+    			console.error('Error:', error);
+    		}
+    		
+
+    	} 
     </script>
 </head>
 <body>
@@ -84,7 +143,7 @@
 
                     <div class="card-body">
                         <!-- Like form -->
-                        <form action="/photos/sendLike" method="post" >
+                        <form action="/photos/sendLike" method="post" > 
                             <!-- Hidden input to pass the post ID -->
                             <input type="hidden" name="id" id="id" th:value="${postPhoto.randomId}">
 
@@ -95,9 +154,9 @@
                                 <i class="fas fa-heart"></i> Like
                             </button>
                         </form>
-                        <form method="post" action="/photos/sendComment">
+                        <form method="post" action="/photos/sendComment" onsubmit="sendComment(event)">
                             <input type="hidden" name="id" id="id" th:value="${postPhoto.randomId}">
-                            <input style="margin-left: 15px; width: 300px" type="text" name="comment" placeholder="Add Comments">
+                            <input style="margin-left: 15px; width: 300px" type="text" name="comment" placeholder="Add Comments" required>
                             <button type="submit">Add</button>
                         </form>
                         <form action="/photos/getLikeComment" method="get">
@@ -116,19 +175,39 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <!-- Like Toggle Script -->
-    <script type="text/javascript">
-        document.querySelectorAll(".like-button").forEach(button => {
-            button.addEventListener("click", function(event) {
-                event.preventDefault();
-                // Disable the button and change the style on click
-                
-                    this.classList.add('liked');
-                  
-                    // Optionally, you can also submit the form here
-                    this.closest("form").submit();  // Submit the form when like button is clicked
-                
+    <script>
+    document.querySelectorAll(".like-button").forEach(button => {
+    button.addEventListener("click", async function(event) {
+        event.preventDefault(); 
+
+        const form = this.closest("form");
+        const formData = new FormData(form);
+
+        try {
+            
+            const response = await fetch('/photos/sendLike', {
+                method: 'POST',
+                body: formData
             });
-        });
+
+            if (response.ok) {
+                // Toggle the liked class based on the current state
+                if (this.classList.contains('liked')) {
+                    this.classList.remove('liked');  // Unlike
+                } else {
+                    this.classList.add('liked');  // Like
+                }
+
+                // Reload the page to update the UI (optional)
+                location.reload();
+            } else {
+                console.error('Error toggling like:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+});
     </script>
 </body>
 </html>

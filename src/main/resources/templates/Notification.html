@@ -67,6 +67,64 @@
             // Set a timeout to hide the alert after 5 seconds
             setTimeout(hideAlert, 5000);
         };
+        async function followRequestInNotification(event) {
+    		event.preventDefault(); // Prevent the form from submitting the traditional way
+
+    		const formData = new FormData(event.target);
+
+    		try {
+    			// Wait for the response from the server
+    			const response = await
+    			fetch('/userFollowRequest', {
+    				method : 'POST',
+    				body : formData,
+    			});
+
+    			if (response.ok) {
+    				const data = await
+    				response.text(); // Wait for the response body
+    				
+    				// Reload the page after processing the response
+    				location.reload();
+
+    			} else {
+    				console.error('Error uploading photo:', response.statusText);
+    			}
+    		} catch (error) {
+    			console.error('Error:', error);
+    		}
+    		
+
+    	}
+        async function followRequestAorRInNotification(event) {
+    		event.preventDefault(); // Prevent the form from submitting the traditional way
+
+    		const formData = new FormData(event.target);
+
+    		try {
+    			// Wait for the response from the server
+    			const response = await
+    			fetch('/userFollowRequestAcceptorReject', {
+    				method : 'POST',
+    				body : formData,
+    			});
+
+    			if (response.ok) {
+    				const data = await
+    				response.text(); // Wait for the response body
+    				
+    				// Reload the page after processing the response
+    				location.reload();
+
+    			} else {
+    				console.error('Error uploading photo:', response.statusText);
+    			}
+    		} catch (error) {
+    			console.error('Error:', error);
+    		}
+    		
+
+    	}
     </script>
 </head>
 <body>
@@ -86,43 +144,45 @@
             <h4>Notifications</h4>
 
             <!-- Loop through requestNewList map -->
-            <div th:each="list : ${requestList}">
-                <div class="notification-item">
-                    <!-- Username (Key in the map) -->
-                    <span class="notification-username" th:text="${list.userName}">Username</span>
+           <!-- Loop through requestNewList map -->
+<div th:each="entry : ${requestList}">
+    <div class="notification-item">
+        <!-- Username (Key in the map) -->
+        <span class="notification-username" th:text="${entry.key}">Username</span>
 
-                    <!-- Action buttons -->
-                    <div class="notification-buttons">
-                        <!-- Accept button -->
-                        <form th:action="@{/userFollowRequestAcceptorReject}" method="post" class="d-inline">
-                            <input type="hidden" name="followerUsername" th:value="${list.userName}">
-                            <input type="hidden" name="username" th:value="${session.username}">
-                            <input type="hidden" name="status" th:value="true">
-                            <button type="submit" class="btn btn-accept btn-sm">Accept</button>
-                        </form>
+        <!-- Action buttons -->
+        <div class="notification-buttons">
+            <!-- Accept button -->
+            <form th:action="@{/userFollowRequestAcceptorReject}" method="post" class="d-inline" onsubmit="followRequestAorRInNotification(event)">
+                <input type="hidden" name="followerUsername" th:value="${entry.key}">
+                <input type="hidden" name="username" th:value="${session.username}">
+                <input type="hidden" name="status" th:value="true">
+                <button type="submit" class="btn btn-accept btn-sm">Accept</button>
+            </form>
 
-                        <!-- Reject button -->
-                        <form th:action="@{/userFollowRequestAcceptorReject}" method="post" class="d-inline">
-                            <input type="hidden" name="followerUsername" th:value="${list.userName}">
-                            <input type="hidden" name="username" th:value="${session.username}">
-                            <input type="hidden" name="status" th:value="false">
-                            <button type="submit" class="btn btn-reject btn-sm">Reject</button>
-                        </form>
+            <!-- Reject button -->
+            <form th:action="@{/userFollowRequestAcceptorReject}" method="post" class="d-inline" onsubmit="followRequestAorRInNotification(event)">
+                <input type="hidden" name="followerUsername" th:value="${entry.key}">
+                <input type="hidden" name="username" th:value="${session.username}">
+                <input type="hidden" name="status" th:value="false">
+                <button type="submit" class="btn btn-reject btn-sm">Reject</button>
+            </form>
 
-                        <!-- Follow button (disabled if value in map is true) -->
-                        <form th:action="@{/userFollowRequest2}" method="post" class="d-inline">
-                            <input type="hidden" name="followerUsername" th:value="${list.userName}">
-                            <input type="hidden" name="username" th:value="${session.username}">
-                            <button type="submit" class="btn btn-follow btn-sm" th:disabled="${list.followingUserName}">Follow</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            <!-- Follow button (disabled if value in map is true) -->
+            <form th:action="@{/userFollowRequest}" method="post" class="d-inline" onsubmit="followRequestInNotification(event)">
+                <input type="hidden" name="followerUsername" th:value="${entry.key}">
+                <input type="hidden" name="username" th:value="${session.username}">
+                <button type="submit" class="btn btn-follow btn-sm" th:disabled="${entry.value}">Follow</button>
+            </form>
+        </div>
+    </div>
+</div>
 
-            <!-- If no requests are available -->
-            <div th:if="${requestList.size() == 0}">
-                <p>No new notifications</p>
-            </div>
+<!-- If no requests are available -->
+<div th:if="${requestList.size() == 0}">
+    <p>No new notifications</p>
+</div>
+
         </div>
     </div>
 

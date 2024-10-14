@@ -10,10 +10,12 @@ import org.springframework.data.repository.query.Param;
 import com.friendbook1.entities.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
-	 Optional<User> findByEmail(String email);
+	Optional<User> findByEmail(String email);
 	 
 	 Optional<User> findByUsername(String Username);
 	 List<User> findByUsernameNot(String username);
+	 
+	 User findByEmailAndPassword(String email, String password);
 	 
 	 @Query("SELECT u FROM User u WHERE u.username LIKE %:keyword% OR u.Fname LIKE %:keyword% OR u.Lname LIKE %:keyword%")
 	    List<User> searchByUsernameOrName(@Param("keyword") String keyword);
