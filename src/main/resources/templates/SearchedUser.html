@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home</title>
-<!-- Bootstrap CSS -->
+
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome -->
+
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script>
@@ -20,16 +20,13 @@
 	}
 
 	window.onload = function() {
-		// Set a timeout to hide the alert after 5 seconds
 		setTimeout(hideAlert, 5000);
 	};
 	async function followRequestInSearch(event) {
-		event.preventDefault(); // Prevent the form from submitting the traditional way
-
+		event.preventDefault(); 
 		const formData = new FormData(event.target);
 
 		try {
-			// Wait for the response from the server
 			const response = await
 			fetch('/userFollowRequest1', {
 				method : 'POST',
@@ -38,10 +35,7 @@
 
 			if (response.ok) {
 				const data = await
-				response.text(); // Wait for the response body
-				
-				// Reload the page after processing the response
-				location.reload();
+				response.text(); 	location.reload();
 
 			} else {
 				console.error('Error uploading photo:', response.statusText);
@@ -55,10 +49,7 @@
 </script>
 </head>
 <body>
-	<!-- Include Navbar Fragment -->
-
 	<div th:insert="~{Navbar :: navbar}"></div>
-	<!-- Success Message -->
 	<div th:if="${message}" id="success-alert"
 		class="alert alert-success alert-dismissible fade show" role="alert">
 		<span th:text="${message}"></span>
@@ -70,14 +61,11 @@
 	<div class="container">
 		<h2>Search Results</h2>
 
-		<!-- Loop through searchUsernameStatus map -->
 		<div th:each="entry : ${searchUsernameStatus}">
 			<div class="card mb-3" style="width: 300px;">
 				<div class="card-body">
-					<!-- Display the username (key of the map entry) -->
 					<h5 class="card-title" th:text="${entry.key}">Username</h5>
 
-					<!-- If not followed, show Follow link -->
 					<form th:if="${entry.value == false}"
 						action="/userFollowRequestInSearch" method="post" onsubmit="followRequestInSearch(event)">
 						<input type="hidden" name="username"
@@ -89,8 +77,7 @@
 						</button>
 					</form>
 
-					<!-- If already followed, show Following button -->
-					<button class="btn btn-secondary" th:if="${entry.value == true}"
+				<button class="btn btn-secondary" th:if="${entry.value == true}"
 						th:text="'Following ' + ${entry.key}" disabled>Requested</button>
 				</div>
 			</div>

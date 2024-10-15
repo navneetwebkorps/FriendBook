@@ -4,28 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Photo Details</title>
-    <!-- Bootstrap CSS -->
+   
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
- <!-- Include Navbar Fragment -->
+
     <div th:insert="~{Navbar :: navbar}"></div>
 <div class="container mt-5">
     <div class="card">
         <div class="card-body">
-            <!-- Section for Likes -->
+           
             <h4 class="card-title">Likes</h4>
             <ul class="list-group list-group-flush">
-                <!-- Loop through the list of usernames who liked the photo -->
+               
                 <li class="list-group-item" th:each="likeUser : ${likeUsernames}">
                     <i class="fas fa-heart text-danger"></i> <span th:text="${likeUser}"></span> liked this
                 </li>
             </ul>
 
-            <!-- Section for Comments -->
+     
             <h4 class="card-title mt-4">Comments</h4>
             <ul class="list-group list-group-flush">
-                <!-- Loop through the map of username -> comment -->
+     
                 <li class="list-group-item" th:each="entry : ${commentUsernameMap}">
                     <strong th:text="${entry.userName}"></strong>: <span th:text="${entry.comment}"></span>
                 </li>
@@ -34,7 +34,7 @@
     </div>
 </div>
 
-<!-- Bootstrap JS and dependencies -->
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

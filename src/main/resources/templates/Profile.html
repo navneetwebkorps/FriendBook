@@ -92,23 +92,21 @@
         }
     </style>
 <script>
-  // Function to handle photo upload
 async function uploadPhoto(event) {
-    event.preventDefault(); // Prevent the form from submitting the traditional way
-    console.log('Uploading photo...'); // Log to confirm function execution
+    event.preventDefault();
+    console.log('Uploading photo...');
 
     const formData = new FormData(event.target);
 
     try {
-        // Wait for the response from the server
         const response = await fetch('/upload', {
             method: 'POST',
             body: formData,
         });
 
         if (response.ok) {
-            console.log('Photo uploaded successfully'); // Log success
-            location.reload(); // Reload the page after processing the response
+            console.log('Photo uploaded successfully');
+            location.reload();
         } else {
             console.error('Error uploading photo:', response.statusText);
         }
@@ -117,23 +115,21 @@ async function uploadPhoto(event) {
     }
 }
 
-// Function to send comments
 async function sendComment1(event) {
-    event.preventDefault(); // Prevent the form from submitting the traditional way
-    console.log('Sending comment...'); // Log to confirm function execution
+    event.preventDefault();
+    console.log('Sending comment...');
 
     const formData = new FormData(event.target);
 
     try {
-        // Wait for the response from the server
         const response = await fetch('/photos/sendComment1', {
             method: 'POST',
             body: formData,
         });
 
         if (response.ok) {
-            console.log('Comment sent successfully'); // Log success
-            location.reload(); // Reload the page after processing the response
+            console.log('Comment sent successfully');
+            location.reload();
         } else {
             console.error('Error sending comment:', response.statusText);
         }
@@ -142,49 +138,33 @@ async function sendComment1(event) {
     }
 }
 
-// Event listener for like buttons
-  async function sendLikeFunction(event) {
-    		event.preventDefault(); // Prevent the form from submitting the traditional way
+async function sendLikeFunction(event) {
+    event.preventDefault();
 
-    		const formData = new FormData(event.target);
+    const formData = new FormData(event.target);
 
-    		try {
-    			// Wait for the response from the server
-    			const response = await
-    			fetch('/photos/sendLike1', {
-    				method : 'POST',
-    				body : formData,
-    			});
+    try {
+        const response = await fetch('/photos/sendLike1', {
+            method: 'POST',
+            body: formData,
+        });
 
-    			if (response.ok) {
-    				const data = await
-    				response.text(); // Wait for the response body
-    				
-    				// Reload the page after processing the response
-    				location.reload();
+        if (response.ok) {
+            const data = await response.text();
+            location.reload();
 
-    			} else {
-    				console.error('Error uploading photo:', response.statusText);
-    			}
-    		} catch (error) {
-    			console.error('Error:', error);
-    		}
-    		
-
-    	}
+        } else {
+            console.error('Error uploading photo:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 </script>
 </head>
 <body>
     <div th:insert="~{Navbar :: navbar}"></div>
-<!-- <!--  th:if="${message}"
-    <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
-        <span th:text="${message}"></span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="hideAlert()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>  -->
 
-   
         <div class="profile-section">
             <div class="profile-header">
                 <h5>Profile</h5>
@@ -225,15 +205,12 @@ async function sendComment1(event) {
           <div class="photos-section">
             <h5>Uploaded Photos</h5>
             <div class="photos-grid">
-                <!-- Iterate over the list of PostPhoto objects -->
                 <div th:each="post : ${postPhotos}" class="photo-item">
                     <img th:src="${post.base64Photo}" alt="User Photo">
                     <div class="photo-actions">
                       <form action="/photos/sendLike1" method="post" onsubmit="sendLikeFunction(event)" > 
-                            <!-- Hidden input to pass the post ID -->
                             <input type="hidden" name="id" id="id" th:value="${post.randomId}">
 
-                            <!-- Like button -->
                             <button type="submit" class="btn like-button" 
                                 th:classappend="${post.alreadyLiked != null && post.alreadyLiked ? 'liked' : ''}"
                              >

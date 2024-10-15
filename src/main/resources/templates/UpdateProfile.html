@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Photo & Add Favorites</title>
+    <title>Update Profile</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .list-group-item {
@@ -16,7 +15,6 @@
 </head>
 <body>
 
-  <!-- Success Message -->
   <div th:if="${message}" id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
     <span th:text="${message}"></span>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="hideAlert()">
@@ -27,13 +25,11 @@
   <div class="container mt-5">
     <h2 class="text-center">Update Profile</h2>
     <form action="/updateProfile" method="post" enctype="multipart/form-data">
-      <!-- Photo Upload -->
       <div class="form-group">
         <label for="profilePhoto">Upload Photo</label>
         <input type="file" class="form-control-file" id="profilePhoto" name="profilePhoto" accept="image/*">
       </div>
 
-      <!-- Favorite Songs -->
       <div class="form-group">
         <label for="favSongs">Favorite Songs</label>
         <div class="input-group">
@@ -45,7 +41,6 @@
         <ul class="list-group mt-2" id="songList"></ul>
       </div>
 
-      <!-- Favorite Books -->
       <div class="form-group">
         <label for="favBooks">Favorite Books</label>
         <div class="input-group">
@@ -57,7 +52,6 @@
         <ul class="list-group mt-2" id="bookList"></ul>
       </div>
 
-      <!-- Favorite Places -->
       <div class="form-group">
         <label for="favPlaces">Favorite Places</label>
         <div class="input-group">
@@ -69,24 +63,19 @@
         <ul class="list-group mt-2" id="placeList"></ul>
       </div>
 
-      <!-- Hidden Inputs for Lists -->
       <input type="hidden" name="favSongs" id="favSongs">
       <input type="hidden" name="favBooks" id="favBooks">
       <input type="hidden" name="favPlaces" id="favPlaces">
 
-      <!-- Submit Button -->
       <button type="submit" class="btn btn-primary btn-block">Update Profile</button>
     </form>
   </div>
 
-  <!-- Script to handle adding/removing items -->
   <script th:inline="javascript">
-    // Populate the arrays with values from the controller
-  const songs = /*[[${userProfile.favSongs}]]*/ [];
-    const books = /*[[${userProfile.favBooks}]]*/ [];
-    const places = /*[[${userProfile.favPlaces}]]*/ [];
+    const songs = [];
+    const books = [];
+    const places = [];
 
-    // On page load, update the lists with existing items
     document.addEventListener('DOMContentLoaded', function() {
       updateList(songs, 'songList');
       updateList(books, 'bookList');
@@ -96,7 +85,6 @@
       places=[];
     });
 
-    // Add event listeners for buttons
     document.getElementById('addSongBtn').addEventListener('click', function() {
       addItem('favSongInput', songs, 'songList');
     });
@@ -109,21 +97,19 @@
       addItem('favPlaceInput', places, 'placeList');
     });
 
-    // Function to add an item to a list
     function addItem(inputId, listArray, listId) {
       const inputElement = document.getElementById(inputId);
       const item = inputElement.value.trim();
       if (item) {
         listArray.push(item);
-        inputElement.value = ''; // Clear the input field
+        inputElement.value = '';
         updateList(listArray, listId);
       }
     }
 
-    // Function to update the displayed list
     function updateList(listArray, listId) {
       const listElement = document.getElementById(listId);
-      listElement.innerHTML = ''; // Clear the list before adding items
+      listElement.innerHTML = '';
       listArray.forEach((item, index) => {
         const li = document.createElement('li');
         li.className = 'list-group-item';
@@ -135,13 +121,11 @@
       });
     }
 
-    // Function to remove an item from the list
     function removeItem(index, listId, listArray) {
       listArray.splice(index, 1);
       updateList(listArray, listId);
     }
 
-    // Before submitting the form, set the hidden input fields
     document.querySelector('form').addEventListener('submit', function() {
       document.getElementById('favSongs').value = songs.join(',');
       document.getElementById('favBooks').value = books.join(',');
@@ -149,7 +133,6 @@
     });
   </script>
 
-  <!-- jQuery and Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
